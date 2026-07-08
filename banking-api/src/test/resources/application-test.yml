@@ -1,0 +1,22 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:banking;MODE=PostgreSQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        default_schema: banking
+  flyway:
+    enabled: true
+    schemas: banking
+    default-schema: banking
+
+playground:
+  jwt:
+    secret: playground-test-secret-minimum-32-characters-long
+    issuer: playground-banking-test
+    ttl-seconds: 3600

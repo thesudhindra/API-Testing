@@ -1,0 +1,62 @@
+spring:
+  application:
+    name: enterprise-api
+  datasource:
+    url: ${PLAYGROUND_DB_URL:jdbc:postgresql://localhost:5432/playground}
+    username: ${PLAYGROUND_DB_USER:playground}
+    password: ${PLAYGROUND_DB_PASSWORD:playground}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        default_schema: enterprise
+    open-in-view: false
+  flyway:
+    enabled: true
+    schemas: enterprise
+    default-schema: enterprise
+    locations: classpath:db/migration
+
+server:
+  port: ${PLAYGROUND_ENTERPRISE_PORT:8082}
+  error:
+    include-message: never
+    include-stacktrace: never
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+playground:
+  jwt:
+    secret: ${PLAYGROUND_JWT_SECRET:playground-dev-secret-change-in-production-min-32-chars}
+    issuer: playground-banking
+    ttl-seconds: 3600
+  enterprise:
+    scheduler:
+      enabled: true
+      poll-interval-ms: 5000
+    jobs:
+      poll-interval-ms: 3000
+    events:
+      poll-interval-ms: 2000
+    webhooks:
+      max-retries: 3
+      retry-backoff-ms: 1000
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+
+logging:
+  level:
+    root: INFO
+    com.playground: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd'T'HH:mm:ss.SSSXXX} %-5level [%thread] correlationId=%X{correlationId} %logger{36} - %msg%n"

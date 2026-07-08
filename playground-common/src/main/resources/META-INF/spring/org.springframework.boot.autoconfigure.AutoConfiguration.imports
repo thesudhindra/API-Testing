@@ -1,0 +1,2 @@
+com.playground.common.autoconfigure.PlaygroundCommonAutoConfiguration
+com.playground.common.autoconfigure.PlaygroundSecurityAutoConfiguration

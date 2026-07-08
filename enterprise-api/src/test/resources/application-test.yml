@@ -1,0 +1,29 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:enterprise;MODE=PostgreSQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        default_schema: enterprise
+  flyway:
+    enabled: true
+    schemas: enterprise
+    default-schema: enterprise
+
+playground:
+  jwt:
+    secret: playground-test-secret-minimum-32-characters-long
+    issuer: playground-banking
+    ttl-seconds: 3600
+  enterprise:
+    scheduler:
+      enabled: false
+    jobs:
+      poll-interval-ms: 100000
+    events:
+      poll-interval-ms: 100000

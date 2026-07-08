@@ -1,0 +1,56 @@
+spring:
+  application:
+    name: playground-api
+  datasource:
+    url: ${PLAYGROUND_DB_URL:jdbc:postgresql://localhost:5432/playground}
+    username: ${PLAYGROUND_DB_USER:playground}
+    password: ${PLAYGROUND_DB_PASSWORD:playground}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        default_schema: playground
+    open-in-view: false
+  flyway:
+    enabled: true
+    schemas: playground
+    default-schema: playground
+    locations: classpath:db/migration
+
+server:
+  port: ${PLAYGROUND_LAB_PORT:8083}
+  error:
+    include-message: never
+    include-stacktrace: never
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+playground:
+  security:
+    user: ${PLAYGROUND_API_USER:learner}
+    password: ${PLAYGROUND_API_PASSWORD:learner}
+  lab:
+    banking-url: ${PLAYGROUND_BANKING_URL:http://localhost:8081}
+    enterprise-url: ${PLAYGROUND_ENTERPRISE_URL:http://localhost:8082}
+    platform-url: ${PLAYGROUND_PLATFORM_URL:http://localhost:8080}
+    contracts-path: ${PLAYGROUND_CONTRACTS_PATH:contracts}
+    fault-ttl-minutes: 60
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+
+logging:
+  level:
+    root: INFO
+    com.playground: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd'T'HH:mm:ss.SSSXXX} %-5level [%thread] correlationId=%X{correlationId} %logger{36} - %msg%n"

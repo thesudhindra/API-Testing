@@ -1,0 +1,22 @@
+slug: concurrent-transfer-race
+title: Concurrent Transfer Race
+difficulty: L3
+learningObjectives:
+  - LO-REST-11
+tags:
+  - concurrency
+  - transfers
+description: |
+  Fire parallel transfers from the same account and observe optimistic locking
+  (409 Conflict) when balances race.
+steps:
+  - action: login
+    service: banking-api
+  - action: parallel_transfers
+    service: banking-api
+    concurrency: 5
+rubric:
+  - signal: at_least_one.conflict
+    expected: true
+  - signal: final_balance.consistent
+    expected: true

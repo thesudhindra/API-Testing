@@ -1,0 +1,36 @@
+openapi: 3.1.0
+info:
+  title: API Testing Playground — Banking API
+  version: 0.1.0
+  description: |
+    Phases 2–3 banking contract summary. Authoritative runtime spec is generated at
+    `/v3/api-docs` when banking-api is running.
+servers:
+  - url: http://localhost:8081
+paths:
+  /health:
+    get:
+      summary: Application health
+      tags: [Platform]
+  /v1/auth/login:
+    post:
+      summary: Issue JWT access token
+      tags: [Authentication]
+  /v1/payments:
+    post:
+      summary: Create payment (requires Idempotency-Key)
+      tags: [Payments]
+      security:
+        - bearerAuth: []
+  /v1/transfers:
+    post:
+      summary: Create transfer (requires Idempotency-Key)
+      tags: [Transfers]
+      security:
+        - bearerAuth: []
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

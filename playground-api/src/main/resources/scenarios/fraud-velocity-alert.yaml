@@ -1,0 +1,24 @@
+slug: fraud-velocity-alert
+title: Fraud Velocity Alert
+difficulty: L2
+learningObjectives:
+  - LO-ASYNC-02
+tags:
+  - fraud
+  - enterprise-api
+description: |
+  Screen a high-value transaction via enterprise-api fraud endpoint and verify
+  an OPEN alert is created when amount exceeds velocity threshold.
+steps:
+  - action: login
+    service: banking-api
+  - action: fraud_screen
+    service: enterprise-api
+    path: POST /v1/fraud/screen
+    body:
+      amount: 6000.00
+rubric:
+  - signal: alert.status
+    expected: OPEN
+  - signal: alert.riskScore
+    expected: 85

@@ -1,0 +1,32 @@
+slug: payment-happy-path
+title: Payment Happy Path
+difficulty: L1
+learningObjectives:
+  - LO-REST-01
+  - LO-REST-08
+tags:
+  - payments
+  - idempotency
+description: |
+  Authenticate as customer, create a payment to a seeded beneficiary, and verify
+  ledger balance decreases. Replay with the same Idempotency-Key to observe safe retry.
+steps:
+  - action: login
+    service: banking-api
+    path: POST /v1/auth/login
+  - action: create_payment
+    service: banking-api
+    path: POST /v1/payments
+    headers:
+      Idempotency-Key: "{{uuid}}"
+  - action: verify_transaction
+    service: banking-api
+    path: GET /v1/transactions
+rubric:
+  - signal: payment.status
+    expected: COMPLETED
+  - signal: idempotency.replayed
+    expected: false
+expectedSignals:
+  - correlationId present in response
+  - application/problem+json on validation errors

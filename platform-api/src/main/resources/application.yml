@@ -1,0 +1,50 @@
+spring:
+  application:
+    name: platform-api
+  datasource:
+    url: ${PLAYGROUND_DB_URL:jdbc:postgresql://localhost:5432/playground}
+    username: ${PLAYGROUND_DB_USER:playground}
+    password: ${PLAYGROUND_DB_PASSWORD:playground}
+    driver-class-name: org.postgresql.Driver
+  flyway:
+    enabled: true
+    schemas: platform
+    default-schema: platform
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+
+server:
+  port: ${PLAYGROUND_PLATFORM_PORT:8080}
+  error:
+    include-message: never
+    include-stacktrace: never
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: never
+
+playground:
+  api:
+    version: 0.1.0-SNAPSHOT
+  security:
+    user: ${PLAYGROUND_API_USER:learner}
+    password: ${PLAYGROUND_API_PASSWORD:learner}
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operationsSorter: method
+
+logging:
+  level:
+    root: INFO
+    com.playground: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd'T'HH:mm:ss.SSSXXX} %-5level [%thread] correlationId=%X{correlationId} %logger{36} - %msg%n"

@@ -1,0 +1,23 @@
+slug: bola-party-access
+title: BOLA Party Access
+difficulty: L2
+learningObjectives:
+  - LO-SEC-12
+tags:
+  - security
+  - authorization
+description: |
+  Verify a retail customer cannot read another party's account. Use JWT party_id
+  mismatch and expect 403 Forbidden with RFC 7807 problem+json.
+steps:
+  - action: login_as_customer
+    service: banking-api
+  - action: access_other_party
+    service: banking-api
+    path: GET /v1/parties/party-other
+    expect_status: 403
+rubric:
+  - signal: response.content_type
+    expected: application/problem+json
+  - signal: response.status
+    expected: 403

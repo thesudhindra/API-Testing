@@ -1,0 +1,30 @@
+{
+  "id": "playground-local-env",
+  "name": "API Testing Playground — Local",
+  "values": [
+    { "key": "platform_base", "value": "http://localhost:8080", "type": "default", "enabled": true },
+    { "key": "banking_base", "value": "http://localhost:8081", "type": "default", "enabled": true },
+    { "key": "enterprise_base", "value": "http://localhost:8082", "type": "default", "enabled": true },
+    { "key": "lab_base", "value": "http://localhost:8083", "type": "default", "enabled": true },
+    { "key": "tenant_id", "value": "tenant-demo", "type": "default", "enabled": true },
+    { "key": "lab_user", "value": "learner", "type": "default", "enabled": true },
+    { "key": "lab_pass", "value": "learner", "type": "default", "enabled": true },
+    { "key": "customer_username", "value": "customer", "type": "default", "enabled": true },
+    { "key": "customer_password", "value": "password", "type": "default", "enabled": true },
+    { "key": "ops_username", "value": "ops", "type": "default", "enabled": true },
+    { "key": "admin_username", "value": "admin", "type": "default", "enabled": true },
+    { "key": "party_id", "value": "party-customer-1", "type": "default", "enabled": true },
+    { "key": "account_gbp_current", "value": "acct-customer-1", "type": "default", "enabled": true },
+    { "key": "account_gbp_savings", "value": "acct-customer-2", "type": "default", "enabled": true },
+    { "key": "account_eur_current", "value": "acct-customer-eur", "type": "default", "enabled": true },
+    { "key": "beneficiary_id", "value": "ben-1", "type": "default", "enabled": true },
+    { "key": "card_id", "value": "card-1", "type": "default", "enabled": true },
+    { "key": "jwt_token", "value": "", "type": "secret", "enabled": true },
+    { "key": "admin_jwt", "value": "", "type": "secret", "enabled": true },
+    { "key": "idempotency_key", "value": "", "type": "default", "enabled": true },
+    { "key": "correlation_id", "value": "", "type": "default", "enabled": true },
+    { "key": "namespace", "value": "lab-session-1", "type": "default", "enabled": true },
+    { "key": "scenario_run_id", "value": "", "type": "default", "enabled": true }
+  ],
+  "_postman_variable_scope": "environment"
+}

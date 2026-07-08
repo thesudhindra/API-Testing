@@ -1,0 +1,38 @@
+openapi: 3.1.0
+info:
+  title: API Testing Playground — Enterprise API
+  version: 0.1.0
+  description: |
+    Phase 4 enterprise contract summary. Authoritative runtime spec is generated at
+    `/v3/api-docs` when enterprise-api is running.
+servers:
+  - url: http://localhost:8082
+paths:
+  /health:
+    get:
+      summary: Application health
+      tags: [Platform]
+  /v1/loans:
+    get:
+      summary: List loans
+      tags: [Loans]
+      security:
+        - bearerAuth: []
+  /v1/fraud/alerts:
+    get:
+      summary: List fraud alerts
+      tags: [Fraud]
+      security:
+        - bearerAuth: []
+  /v1/webhooks:
+    post:
+      summary: Register webhook endpoint
+      tags: [Webhooks]
+      security:
+        - bearerAuth: []
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

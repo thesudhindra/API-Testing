@@ -1,0 +1,25 @@
+slug: webhook-retry-dlq
+title: Webhook Retry and DLQ
+difficulty: L3
+learningObjectives:
+  - LO-ASYNC-02
+  - LO-RES-01
+tags:
+  - webhooks
+  - resilience
+description: |
+  Register a webhook pointing to a failing mock URL, trigger an event, and
+  observe retry attempts before DLQ status.
+steps:
+  - action: login_as_ops
+    service: banking-api
+  - action: register_webhook
+    service: enterprise-api
+    target_url: http://localhost:8083/v1/mocks/webhooks/fail
+  - action: trigger_event
+    service: enterprise-api
+rubric:
+  - signal: delivery.attempt_count
+    expected: ">1"
+  - signal: delivery.final_status
+    expected: DLQ

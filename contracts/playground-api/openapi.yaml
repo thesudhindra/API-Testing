@@ -1,0 +1,41 @@
+openapi: 3.1.0
+info:
+  title: API Testing Playground — Test Lab API
+  version: 0.1.0
+  description: |
+    Phase 5 learning platform contract. Authoritative runtime spec is generated at
+    `/v3/api-docs` when playground-api is running.
+servers:
+  - url: http://localhost:8083
+paths:
+  /health:
+    get:
+      summary: Application health
+      tags: [Platform]
+  /v1/scenarios:
+    get:
+      summary: List lab scenarios
+      tags: [Scenarios]
+      security:
+        - basicAuth: []
+  /v1/playground/reset:
+    post:
+      summary: Reset lab data by scope
+      tags: [Reset]
+      security:
+        - basicAuth: []
+  /v1/playground/faults:
+    post:
+      summary: Create fault injection rule
+      tags: [Faults]
+      security:
+        - basicAuth: []
+  /v1/mocks/{path}:
+    post:
+      summary: Public mock endpoint handler
+      tags: [Mocks]
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic

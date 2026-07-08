@@ -1,0 +1,23 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:playground-lab;MODE=PostgreSQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        default_schema: playground
+  flyway:
+    enabled: true
+    schemas: playground
+    default-schema: playground
+
+playground:
+  lab:
+    banking-url: http://localhost:8081
+    enterprise-url: http://localhost:8082
+    platform-url: http://localhost:8080
+    contracts-path: contracts

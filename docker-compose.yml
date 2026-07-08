@@ -1,0 +1,111 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: playground-postgres
+    environment:
+      POSTGRES_DB: ${PLAYGROUND_DB_NAME:-playground}
+      POSTGRES_USER: ${PLAYGROUND_DB_USER:-playground}
+      POSTGRES_PASSWORD: ${PLAYGROUND_DB_PASSWORD:-playground}
+    ports:
+      - "${PLAYGROUND_DB_PORT:-5432}:5432"
+    volumes:
+      - playground_pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${PLAYGROUND_DB_USER:-playground} -d ${PLAYGROUND_DB_NAME:-playground}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  platform-api:
+    build:
+      context: .
+      dockerfile: platform-api/Dockerfile
+    container_name: playground-platform-api
+    profiles:
+      - foundation
+      - core
+      - full
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      PLAYGROUND_DB_URL: jdbc:postgresql://postgres:5432/${PLAYGROUND_DB_NAME:-playground}
+      PLAYGROUND_DB_USER: ${PLAYGROUND_DB_USER:-playground}
+      PLAYGROUND_DB_PASSWORD: ${PLAYGROUND_DB_PASSWORD:-playground}
+      PLAYGROUND_API_USER: ${PLAYGROUND_API_USER:-learner}
+      PLAYGROUND_API_PASSWORD: ${PLAYGROUND_API_PASSWORD:-learner}
+      PLAYGROUND_PLATFORM_PORT: 8080
+    ports:
+      - "${PLAYGROUND_PLATFORM_PORT:-8080}:8080"
+
+  banking-api:
+    build:
+      context: .
+      dockerfile: banking-api/Dockerfile
+    container_name: playground-banking-api
+    profiles:
+      - core
+      - full
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      PLAYGROUND_DB_URL: jdbc:postgresql://postgres:5432/${PLAYGROUND_DB_NAME:-playground}
+      PLAYGROUND_DB_USER: ${PLAYGROUND_DB_USER:-playground}
+      PLAYGROUND_DB_PASSWORD: ${PLAYGROUND_DB_PASSWORD:-playground}
+      PLAYGROUND_JWT_SECRET: ${PLAYGROUND_JWT_SECRET:-playground-dev-secret-change-in-production-min-32-chars}
+      PLAYGROUND_BANKING_PORT: 8081
+    ports:
+      - "${PLAYGROUND_BANKING_PORT:-8081}:8081"
+
+  enterprise-api:
+    build:
+      context: .
+      dockerfile: enterprise-api/Dockerfile
+    container_name: playground-enterprise-api
+    profiles:
+      - full
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      PLAYGROUND_DB_URL: jdbc:postgresql://postgres:5432/${PLAYGROUND_DB_NAME:-playground}
+      PLAYGROUND_DB_USER: ${PLAYGROUND_DB_USER:-playground}
+      PLAYGROUND_DB_PASSWORD: ${PLAYGROUND_DB_PASSWORD:-playground}
+      PLAYGROUND_JWT_SECRET: ${PLAYGROUND_JWT_SECRET:-playground-dev-secret-change-in-production-min-32-chars}
+      PLAYGROUND_ENTERPRISE_PORT: 8082
+    ports:
+      - "${PLAYGROUND_ENTERPRISE_PORT:-8082}:8082"
+
+  playground-api:
+    build:
+      context: .
+      dockerfile: playground-api/Dockerfile
+    container_name: playground-lab-api
+    profiles:
+      - full
+    depends_on:
+      postgres:
+        condition: service_healthy
+      platform-api:
+        condition: service_started
+      banking-api:
+        condition: service_started
+      enterprise-api:
+        condition: service_started
+    environment:
+      PLAYGROUND_DB_URL: jdbc:postgresql://postgres:5432/${PLAYGROUND_DB_NAME:-playground}
+      PLAYGROUND_DB_USER: ${PLAYGROUND_DB_USER:-playground}
+      PLAYGROUND_DB_PASSWORD: ${PLAYGROUND_DB_PASSWORD:-playground}
+      PLAYGROUND_API_USER: ${PLAYGROUND_API_USER:-learner}
+      PLAYGROUND_API_PASSWORD: ${PLAYGROUND_API_PASSWORD:-learner}
+      PLAYGROUND_LAB_PORT: 8083
+      PLAYGROUND_PLATFORM_URL: http://platform-api:8080
+      PLAYGROUND_BANKING_URL: http://banking-api:8081
+      PLAYGROUND_ENTERPRISE_URL: http://enterprise-api:8082
+      PLAYGROUND_CONTRACTS_PATH: /app/contracts
+    ports:
+      - "${PLAYGROUND_LAB_PORT:-8083}:8083"
+
+volumes:
+  playground_pg_data:

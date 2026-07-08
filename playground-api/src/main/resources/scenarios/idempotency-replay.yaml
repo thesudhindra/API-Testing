@@ -1,0 +1,25 @@
+slug: idempotency-replay
+title: Idempotency Replay
+difficulty: L2
+learningObjectives:
+  - LO-REST-08
+tags:
+  - payments
+  - idempotency
+description: |
+  Submit the same payment twice with an identical Idempotency-Key and body.
+  The second response must replay the first without double-posting.
+steps:
+  - action: login
+    service: banking-api
+  - action: create_payment
+    service: banking-api
+    note: Use fixed Idempotency-Key idem-lab-1
+  - action: replay_payment
+    service: banking-api
+    note: Same key and body — expect replay
+rubric:
+  - signal: second_response.replayed
+    expected: true
+  - signal: account.balance_delta
+    expected: single_debit_only
