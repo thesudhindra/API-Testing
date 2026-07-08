@@ -172,7 +172,7 @@ Authenticate with HTTP Basic (`learner` / `learner`). Service runs on port **808
 
 ## Documentation
 
-**Start here (grocery-store style, one file, all endpoints):**
+**Start here (one file, all endpoints):**
 
 ### → [API Testing Guide](docs/API-TESTING-GUIDE.md)
 
